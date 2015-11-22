@@ -1,0 +1,38 @@
+---
+title: "Untitled"
+author: "zael8"
+date: "21 listopada 2015"
+output: html_document
+---
+
+```{r}
+library(dplyr)
+library(zoo)
+
+```
+
+```{r}
+data1<- read.csv("mammographic.dat", header = FALSE, sep= "," , skip = 10, na.strings = "?")
+colnames(data1)<- c("BIRADS", "Age", "Shape", "Margin", "Density", "Severity")
+data1$BIRADS<-as.numeric(data1$BIRADS)
+data1$Age<-as.numeric(data1$Age)
+data1$Shape<- as.numeric(data1$Shape)
+data1$Margin<- as.numeric(data1$Margin)
+data1$Density <-  as.numeric(data1$Density)
+data1<- na.aggregate(data1, FUN= median)
+```
+
+```{r}
+model <- glm(Severity~BIRADS+Age+Shape+Margin+Density, data = data1, family = "binomial")
+summary(model)
+```
+
+```{r}
+rakPred<- function (BIRADS, Age, Shape, Margin, Density) {
+prediction<- newdata[which(newdataa$BIRADS==as.character(BIRADS)&newdataa$Age==as.character(Age)&newdataa$Shape==as.character(Shape)&newdataa$Margin==as.character(Margin)&newdataa&Density==as.character(Density)),]  
+pred<- predict.glm(model, newdata = prediction, type= "response")
+
+pred[[1]]
+  
+}
+```

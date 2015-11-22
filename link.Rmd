@@ -1,0 +1,11 @@
+---
+title: "ShinyApps"
+author: "zael8"
+date: "22 listopada 2015"
+output: html_document
+---
+
+
+Here you can find the app:
+
+https://md47976.shinyapps.io/shiny 

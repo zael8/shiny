@@ -1,0 +1,57 @@
+---
+title: "About"
+author: "zael8"
+date: "21 listopada 2015"
+output: html_document
+---
+
+The purpose of this application is to estimate the probability of the malignant breast cancer. The  Mammographic Mass Data Set  is used in order to estimate a logistic regression model that calculates the probabilities with respect to several variables. The dataset can find here:
+https://archive.ics.uci.edu/ml/datasets/Mammographic+Mass
+
+
+The list of libraries being used:
+
+
+```{r, message=F, warning=F}
+library(dplyr)
+library(zoo)
+library(shiny)
+library(rpart)
+
+
+```
+
+The data loading. The missing values are replaced by the median value of the particular variable. 
+
+```{r}
+data1<- read.csv("mammographic.dat", header = FALSE, sep= "," , skip = 10, na.strings = "?")
+colnames(data1)<- c("BIRADS", "Age", "Shape", "Margin", "Density", "Severity")
+data1$BIRADS<-as.numeric(data1$BIRADS)
+data1$Age<-as.numeric(data1$Age)
+data1$Shape<- as.numeric(data1$Shape)
+data1$Margin<- as.numeric(data1$Margin)
+data1$Density <-  as.numeric(data1$Density)
+data1<- na.aggregate(data1, FUN= median)
+```
+
+
+Please find below the estimated model’s summary:
+
+```{r}
+model <- glm(Severity~BIRADS+Age+Shape+Margin+Density, data = data1, family = "binomial")
+summary(model)
+```
+
+
+Attribute Information:
+
+6 Attributes in total (1 goal field, 1 non-predictive, 4 predictive attributes) 
+
+1. BI-RADS assessment: 1 to 5 (ordinal, non-predictive!) 
+2. Age: patient's age in years (integer) 
+3. Shape: mass shape: round=1 oval=2 lobular=3 irregular=4 (nominal) 
+4. Margin: mass margin: circumscribed=1 microlobulated=2 obscured=3 ill-defined=4 spiculated=5 (nominal) 
+5. Density: mass density high=1 iso=2 low=3 fat-containing=4 (ordinal) 
+6. Severity: benign=0 or malignant=1 (binominal, goal field) 
+
+
